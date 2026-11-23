@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RecruitKit · JD to Boolean, free</title>
+<meta name="description" content="Paste a US IT job description, get ready Boolean and X-ray strings for LinkedIn, Dice, Monster, Indeed and Google. Free, runs in your browser. By EzuraArc.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/rk.css">
+</head><body>
+<header class="top"><a class="brand" href="/"><img src="/assets/logo.svg" alt="" class="logo">RecruitKit <small>by EzuraArc</small></a><nav><a href="#tool">Free tool</a><a href="#kit">Submission Kit</a><a href="#pricing">Pricing</a></nav></header>
+
+<section class="hero band">
+ <h1>JD in. Boolean strings out. <span class="o">Ten seconds, every board.</span></h1>
+ <p class="lede">Built for US IT recruiters and bench sales teams. Paste a requirement and get LinkedIn, Dice, Monster/Indeed and Google X-ray strings, with titles, skills, location and visa terms already pulled out. Free, no login, nothing uploaded.</p>
+</section>
+
+<section class="band" id="tool">
+<div class="grid">
+ <div class="pan">
+  <label for="jd">Job description</label>
+  <textarea id="jd" spellcheck="false" placeholder="Paste the requirement email or JD here"></textarea>
+  <div class="row"><button id="go">Generate strings</button><button class="ghost" id="clr">Clear</button><button class="ghost" id="smp">Sample JD</button></div>
+  <p class="foot" id="smpnote" hidden>Sample JD written for this demo.</p>
+ </div>
+ <div class="pan">
+  <span class="lab">Job titles</span>
+  <input type="text" id="titles" aria-label="Job titles, comma separated">
+  <p class="hint" style="margin-top:6px">Comma separated. Edit freely.</p>
+  <span class="lab">Skills found</span>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Orange = must-have (in every string) · plain = nice-to-have (left out so you don't miss good people) · struck = ignore</p>
+  <div class="meta">
+   <div><b>Location</b><span id="loc">—</span></div>
+   <div><b>Experience</b><span id="exp">—</span></div>
+   <div><b>Work auth / tax</b><span id="visa">—</span></div>
+  </div>
+  <span class="lab">Search width</span>
+  <div class="seg" role="group" aria-label="Search width"><button id="strict" aria-pressed="true">Strict</button><button id="broad" aria-pressed="false">Broad</button></div>
+  <label for="excl" style="margin-top:14px">Exclude words</label>
+  <input type="text" id="excl" value="recruiter, staffing, intern">
+ </div>
+</div>
+<table class="stack out"><thead><tr><th>Board</th><th>Search string</th><th>Use it</th></tr></thead><tbody id="out"></tbody></table>
+</section>
+
+<section class="band kit" id="kit">
+ <h2>Next: the Submission Kit <span class="tag">Early access</span></h2>
+ <p class="lede">Strings get you candidates. Submissions are where the hours go. Drop in a resume and the requirement and get everything you send to the vendor in one go.</p>
+ <ul class="feat">
+  <li><b>Resume in your template</b>Your logo, your layout, contact details stripped. No more copy-paste into Word.</li>
+  <li><b>Skill matrix</b>Years per skill filled from the resume, ready for the vendor's format.</li>
+  <li><b>RTR + submission email</b>Right-to-represent and a clean submission mail with rate, visa and availability.</li>
+  <li><b>Match score</b>How well the resume fits the JD, with the missing skills called out before you submit.</li>
+ </ul>
+ <a class="cta" href="https://wa.me/919500264291?text=Hi%2C%20I%27d%20like%20early%20access%20to%20RecruitKit%20Submission%20Kit">Get early access on WhatsApp</a>
+ <p class="foot">Or mail hello@ezuraarc.com · WhatsApp +91 95002 64291</p>
+</section>
+
+<section class="band" id="pricing">
+ <h2>Pricing that a 5-recruiter desk doesn't need approval for</h2>
+ <div class="tiers">
+  <div class="tier"><h3>Free</h3><p class="price">₹0</p><p>Boolean + X-ray strings, unlimited. 3 Submission Kits a day.</p></div>
+  <div class="tier hot"><h3>Recruiter</h3><p class="price">₹299<small>/month</small></p><p>Unlimited Submission Kits for one recruiter. Or ₹2,999 once, lifetime.</p></div>
+  <div class="tier"><h3>Desk</h3><p class="price">₹19,999<small> once</small></p><p>10 recruiter seats, lifetime. Your resume template set up for you.</p></div>
+ </div>
+ <p class="foot">Early-access firms get the lifetime price locked in.</p>
+</section>
+
+<footer class="band foot">RecruitKit is made by EzuraArc Pvt. Ltd., Tamil Nadu · hello@ezuraarc.com · +91 95002 64291</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/rk.js"></script>
+</body></html>
