@@ -24,14 +24,22 @@ const q=s=>/\s|[\/#.+]/.test(s)?`"${s}"`:s;
 const toast=m=>{const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1400)};
 function parse(){
  const jd=$("jd").value;
- const niceIdx=jd.search(/nice to have|good to have|preferred|plus:/i);
- skills=SK.filter(s=>s[1].test(jd)).map(s=>{const i=jd.search(s[1]);return{name:s[0],syn:s[2],pos:i,state:(niceIdx>-1&&i>niceIdx)?"nice":"must"}}).sort((a,b)=>a.pos-b.pos);
+ const NICE=/nice to have|good to have|nice-to-have|good-to-have|preferred|plus:|a plus|added advantage|desirable/i;
+ // A "nice to have" heading demotes everything after it. Some JDs instead tag a
+ // single line ("Oracle / PostgreSQL exposure good to have"), so check the line too.
+ const hdr=jd.split("\n").findIndex(l=>NICE.test(l)&&l.trim().length<40);
+ const niceIdx=hdr>-1?jd.split("\n").slice(0,hdr).join("\n").length:-1;
+ const lineAt=i=>{const s=jd.lastIndexOf("\n",i)+1,e=jd.indexOf("\n",i);return jd.slice(s,e===-1?jd.length:e)};
+ skills=SK.filter(s=>s[1].test(jd)).map(s=>{const i=jd.search(s[1]);
+  return{name:s[0],syn:s[2],pos:i,state:((niceIdx>-1&&i>niceIdx)||NICE.test(lineAt(i)))?"nice":"must"}}).sort((a,b)=>a.pos-b.pos);
  let titles=[];const tl=(jd.match(/(job\s*)?title\s*[:\-]\s*(.+)/i)||[])[2]||jd.split("\n")[0];
  for(const [re,list] of TT){if(re.test(tl)){titles=list;break}}
  if(!titles.length)for(const [re,list] of TT){if(re.test(jd.slice(0,300))){titles=list;break}}
- if(!titles.length&&tl)titles=[tl.trim().slice(0,60)];
+ // Last resort: use the raw line, but only if it reads like a job title. Stops
+ // "please send resumes asap thanks" becoming a quoted search term.
+ if(!titles.length&&tl){const t=tl.trim();if(/\b(developer|engineer|architect|analyst|administrator|admin|consultant|lead|manager|designer|tester|scientist|specialist|programmer|sre|dba|devops)\b/i.test(t)&&t.length<=60)titles=[t.slice(0,60)]}
  $("titles").value=titles.join(", ");
- const lm=jd.match(/([A-Z][a-zA-Z.]+(?:\s[A-Z][a-zA-Z.]+)?),\s*([A-Z]{2})\b/);
+ let lm=null;const lre=/([A-Z][a-zA-Z.]+(?:\s[A-Z][a-zA-Z.]+)?),?\s+([A-Z]{2})\b/g;for(let mm;(mm=lre.exec(jd))!==null;){if(ST[mm[2]]){lm=mm;break}}
  $("loc").textContent=lm?`${lm[1]}, ${lm[2]}`:(/remote/i.test(jd)?"Remote":"—");
  $("loc").dataset.city=lm?lm[1]:"";$("loc").dataset.st=lm?lm[2]:"";
  const em=jd.match(/(\d{1,2})\s*\+?\s*(?:years|yrs)/i);$("exp").textContent=em?em[1]+"+ years":"—";
@@ -58,7 +66,8 @@ function build(){
  const locG=city?grp([`"${city}"`,st?`"${ST[st]||st}"`:""].filter(Boolean),"OR"):"";
  const li=[std,nots].filter(Boolean).join(" ");
  const dice=[std,locG?"AND "+locG:""].filter(Boolean).join(" ");
- const indeed=[std.replace(/ AND /g," AND "),nots.replace(/NOT /g,"-")].filter(Boolean).join(" ");
+ // Monster/Indeed resume search treats spaces as AND and uses -term to exclude.
+ const indeed=[std.replace(/ AND /g," "),nots.replace(/NOT /g,"-")].filter(Boolean).join(" ");
  const xt=grp(titles.slice(0,3).map(x=>`"${x}"`),"OR");
  const xs=must.slice(0,width==="broad"?2:4).map(s=>q(s.syn[0])).join(" ");
  const xray=[`site:linkedin.com/in`,xt,xs,locG,`-intitle:jobs -inurl:jobs`].filter(Boolean).join(" ");
